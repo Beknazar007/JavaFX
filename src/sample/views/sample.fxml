@@ -39,7 +39,7 @@
             <Font name="Garuda Bold" size="13.0" />
          </font>
       </Button>
-      <Label layoutX="259.0" text="Asanov" textAlignment="CENTER" textFill="WHITE">
+      <Label layoutX="259.0" text="Saitov" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Garuda Bold" size="52.0" />
          </font>

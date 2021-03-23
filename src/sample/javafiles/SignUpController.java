@@ -1,21 +1,14 @@
 package sample.javafiles;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import sample.javafiles.DatabaseHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 public class SignUpController {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
 
     @FXML
     private TextField login_field;
@@ -31,20 +24,53 @@ public class SignUpController {
 
     @FXML
     private TextField signUpLastname;
+    @FXML
+    private RadioButton checkBoxMale;
 
     @FXML
-    private CheckBox checkBoxMale;
+    private Button toAuthButton;
 
-    @FXML
-    private CheckBox checkBoxFemale;
+
 
     @FXML
     void initialize() {
+        toAuthButton.setOnAction(actionEvent -> {
+            signUpButton.getScene().getWindow().hide();
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sample/views/sample.fxml"));
+
+            try {
+                loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Parent root = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        });
+        signUpButton.setOnAction(actionEvent -> {
+            signUpNewUser();
+        });
+    }
+
+    private void signUpNewUser() {
         DatabaseHandler dbHandler = new DatabaseHandler();
 
-        signUpButton.setOnAction(actionEvent -> {
-            dbHandler.signUpUser(signUpName.getText(), signUpLastname.getText(), login_field.getText(),
-                    password_field.getText(), "Male");
-        });
+        String firstName = signUpName.getText();
+        String lastName = signUpLastname.getText();
+        String userName = login_field.getText();
+        String password = password_field.getText();
+        String gender;
+        if (checkBoxMale.isSelected())
+            gender = "Мужской";
+        else
+            gender = "Женский";
+
+        User user = new User(firstName,lastName,userName,password,gender);
+
+        dbHandler.signUpUser(user);
     }
 }
